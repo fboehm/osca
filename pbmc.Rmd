@@ -1,9 +1,18 @@
 ---
-title: "Chapter 25"
+title: "PBMCs with 10xGenomics"
 author: "Frederick J. Boehm"
 date: "11/6/2020"
 output: html_document
+params:
+  lastmod: !r lubridate::now()
 ---
+
+Last rendered at the below time:
+
+```{r}
+params$lastmod
+```
+
 
 ```{r}
 library(BiocFileCache)
@@ -28,6 +37,15 @@ location <- mapIds(EnsDb.Hsapiens.v86, keys=rowData(sce.pbmc)$ID,
     column="SEQNAME", keytype="GENEID")
 ```
 
+```{r}
+set.seed(100)
+e.out <- emptyDrops(counts(sce.pbmc))
+sce.pbmc <- sce.pbmc[,which(e.out$FDR <= 0.001)]
+```
+
+One question that arises is: "How does `emptyDrops` function work?"
 
 
-
+```{r}
+unfiltered <- sce.pbmc
+```
